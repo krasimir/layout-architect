@@ -13,7 +13,7 @@
 
     const $ = tag => document.createElement(tag);
     const $a = (e, attr, value) => e.setAttribute(attr, value);
-    const blocks = allBlocks.slice();
+    const blocks = filterBlocksBasedOnTheInitialState();
     const laContainer = $('DIV');
     const listeners = [];
     let state = initialState || null;
@@ -21,6 +21,21 @@
 
     $a(laContainer, 'class', 'la');
 
+    function filterBlocksBasedOnTheInitialState() {
+      const all = allBlocks.slice();
+
+      if (!initialState) return all;
+      const foundInTree = (function parseEl(found, item) {
+        if (item.elements.length === 0) {
+          found.push(item.name);
+        } else {
+          item.elements.forEach(i => parseEl(found, i));
+        }
+        return found;
+      })([], initialState);
+
+      return all.filter(i => foundInTree.indexOf(i) === -1);
+    }
     function createBlock(name) {
       return { name: name, elements: [] }
     }

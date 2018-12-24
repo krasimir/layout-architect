@@ -7,7 +7,7 @@ A small utility for building layouts. Written in vanilla JavaScript.
 | File          | Size           
 | ------------- |:-------------
 | [la.min.css](https://unpkg.com/layout-architect@latest/la.min.css)    | 1.3KB
-| [la.min.js](https://unpkg.com/layout-architect@latest/la.min.js)     | 3.8KB
+| [la.min.js](https://unpkg.com/layout-architect@latest/la.min.js)     | 4.0KB
 
 Check out the demo [here](https://krasimir.github.io/layout-architect/).
 
