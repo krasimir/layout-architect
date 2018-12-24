@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Layout architect</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body, html {
+      width: 100%;
+      height: 100%;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-family: 16px;
+    }
+    #container {
+      margin: 4em auto;
+      width: 300px;
+      height: 300px;
+      border: solid 1px #999;
+      border-radius: 4px;
+      padding: 0.5em;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <script src="./index.js"></script>
+  <script>
+    LayoutArchitect(
+      document.querySelector('#container'),
+      ['editor', 'output', 'console']
+    )
+  </script>
+  
+</body>
+</html>
