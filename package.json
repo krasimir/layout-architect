@@ -1,10 +1,10 @@
 {
   "name": "layout-architect",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "A small utility for building layouts written in vanilla JavaScript",
-  "main": "index.js",
+  "main": "la.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel ./la.js | uglifyjs -c -m -o ./la.min.js && cat ./la.css | uglifycss > ./la.min.css"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/krasimir/layout-architect/issues"
   },
-  "homepage": "https://github.com/krasimir/layout-architect#readme"
+  "homepage": "https://github.com/krasimir/layout-architect#readme",
+  "devDependencies": {
+    "@babel/cli": "7.0.0",
+    "@babel/core": "7.0.0",
+    "@babel/preset-env": "7.2.3",
+    "uglify-js": "3.4.9",
+    "uglifycss": "0.0.29"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
 }

@@ -11,13 +11,15 @@
     if (!rootContainer) throw new Error('Please provide a HTML element as first argument!');
     if (!allBlocks) throw new Error('Please provide a list of strings as a second argument!');
 
+    const $ = tag => document.createElement(tag);
+    const $a = (e, attr, value) => e.setAttribute(attr, value);
     const blocks = allBlocks.slice();
-    const laContainer = document.createElement('DIV');
+    const laContainer = $('DIV');
     const listeners = [];
     let state = initialState || null;
     let selectedCallback;
 
-    laContainer.setAttribute('class', 'la');
+    $a(laContainer, 'class', 'la');
 
     function createBlock(name) {
       return { name: name, elements: [] }
@@ -77,10 +79,10 @@
     }
     function addLinks(container, operations, item, parent) {
       return operations.map(linkData => {
-        const a = document.createElement('A');
-        a.setAttribute('data-op', linkData[0]);
-        a.setAttribute('href', 'javascript:void(0);');
-        a.setAttribute('class', linkData[2]);
+        const a = $('A');
+        $a(a, 'data-op', linkData[0]);
+        $a(a, 'href', 'javascript:void(0);');
+        $a(a, 'class', linkData[2]);
         a.innerHTML = linkData[1];
         a.item = item;
         a.parent = parent;
@@ -88,9 +90,9 @@
       }).forEach(link => container.appendChild(link));
     }
     function renderItem(item, parent) {
-      const e = document.createElement('DIV');
+      const e = $('DIV');
 
-      e.setAttribute('class', 'la-block');
+      $a(e, 'class', 'la-block');
       if (item.elements.length === 0) {
         e.innerHTML = '<div class="la-name">' + item.name + '</div>';
         addLinks(e, [ ['remove', 'X', 'la-remove'], ], item, parent);
@@ -107,16 +109,16 @@
       return e;
     }
     function createBlockSelector() {
-      const e = document.createElement('DIV');
+      const e = $('DIV');
       blocks.forEach(blockName => {
-        const link = document.createElement('A');
-        link.setAttribute('href', 'javascript:void(0);');
-        link.setAttribute('data-op', 'select');
+        const link = $('A');
+        $a(link, 'href', 'javascript:void(0);');
+        $a(link, 'data-op', 'select');
         link.item = blockName;
         link.innerHTML = blockName;
         e.appendChild(link);
       });
-      e.setAttribute('class', 'la-selector');
+      $a(e, 'class', 'la-selector');
       return e;
     }
     function selectBlock() {
