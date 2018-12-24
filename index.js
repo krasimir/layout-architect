@@ -13,6 +13,7 @@
 
     const blocks = allBlocks.slice();
     const laContainer = document.createElement('DIV');
+    const listeners = [];
     let state = initialState || null;
     let selectedCallback;
 
@@ -21,9 +22,10 @@
     function createBlock(name) {
       return { name: name, elements: [] }
     }
-    function addItem(item, where) {
+    function addItem(item, direction, where) {
       return selectBlock().then(blockName => createBlock(blockName)).then(block => {
         if (item.elements.length === 0) {
+          item.direction = direction;
           item.elements = where === 'after' ? [
             createBlock(item.name),
             block
@@ -33,35 +35,57 @@
           ];
           delete item.name;
         } else {
-          where === 'after' ?
-            item.elements.push(block) :
-            item.elements = [block].concat(item.elements);
+          if (item.direction !== direction) {
+            const oldElements = {
+              direction: item.direction,
+              elements: item.elements
+            }
+            item.elements = where === 'after' ?
+              [ oldElements, block ] :
+              [ block, oldElements ]
+          } else {
+            where === 'after' ?
+              item.elements.push(block) :
+              item.elements = [block].concat(item.elements);
+          }
+          item.direction = direction;
         }
       })      
     }
     function removeItem(parent, item) {
+      if (!parent) {
+        state = initialState || null;
+        blocks.push(item.name);
+        return;
+      }
+
       const index = parent.elements.findIndex(i => i === item);
-      
       if (index > -1) {
         parent.elements.splice(index, 1);
         if (parent.elements.length === 1) {
-          parent.name = parent.elements[0].name;
-          parent.elements = [];
-          delete parent.direction;
+          if (parent.elements[0].elements.length > 0) {
+            parent.direction = parent.elements[0].direction; 
+            parent.elements = parent.elements[0].elements;
+          } else {
+            parent.name = parent.elements[0].name;
+            parent.elements = [];
+            delete parent.direction;
+          }
         }
         blocks.push(item.name);
       }
     }
-    function addLinks(container, operations, item, parent, insertBefore) {
+    function addLinks(container, operations, item, parent) {
       return operations.map(linkData => {
         const a = document.createElement('A');
         a.setAttribute('data-op', linkData[0]);
         a.setAttribute('href', 'javascript:void(0);');
+        a.setAttribute('class', linkData[2]);
         a.innerHTML = linkData[1];
         a.item = item;
         a.parent = parent;
         return a;
-      }).forEach(link => insertBefore ? container.insertBefore(link, container.firstChild) : container.appendChild(link));
+      }).forEach(link => container.appendChild(link));
     }
     function renderItem(item, parent) {
       const e = document.createElement('DIV');
@@ -69,16 +93,16 @@
       e.setAttribute('class', 'la-block');
       if (item.elements.length === 0) {
         e.innerHTML = '<div class="la-name">' + item.name + '</div>';
-        parent && addLinks(e, [ ['remove', 'X'], ], item, parent, true);
+        addLinks(e, [ ['remove', 'X', 'la-remove'], ], item, parent);
       } else {
         e.innerHTML = '<div class="la-children" style="grid-template-' + (item.direction === 'horizontal' ? 'rows' : 'columns') + ': repeat(' + item.elements.length + ', 1fr);"></div>';
         item.elements.forEach(i => e.querySelector('.la-children').appendChild(renderItem(i, item)))
       }
-      blocks.length > 0 && addLinks(e, [
-        ['vertical:left', '&#8592;'], // ←
-        ['horizontal:top', '&#8593;'], // ↑
-        ['horizontal:bottom', '&#8595;'], // ↓
-        ['vertical:right', '&#8594;'] // →
+      addLinks(e, [
+        ['vertical:left', '', 'la-left'],
+        ['horizontal:top', '', 'la-top'],
+        ['horizontal:bottom', '', 'la-bottom'],
+        ['vertical:right', '', 'la-right']
       ], item, parent);
       return e;
     }
@@ -112,6 +136,16 @@
       while (laContainer.firstChild) { laContainer.removeChild(laContainer.firstChild); }
       laContainer.appendChild(content);
     }
+    function notify() {
+      listeners.forEach(l => l(state));
+    }
+    function selectInitialBlock() {
+      selectBlock().then(blockName => {
+        state = createBlock(blockName);
+        render();
+        notify();
+      });
+    }
 
     laContainer.addEventListener('click', event => {
       let operation = event.target.getAttribute('data-op');
@@ -121,22 +155,38 @@
       if (operation && item) {
         if (operation === 'remove') {
           removeItem(parent, item);
-          render();
+          if (state) {
+            render();
+          } else {
+            selectInitialBlock();
+          }
+          notify();
         } else if (operation === 'select') {
           selectedCallback(item);
         } else {
+          if (blocks.length === 0) return;
           operation = operation.split(':');
-          item.direction = operation[0];
-          addItem(item, operation[1] === 'right' || operation[1] === 'bottom' ? 'after' : 'before').then(render);
+          addItem(item, operation[0], operation[1] === 'right' || operation[1] === 'bottom' ? 'after' : 'before').then(() => {
+            render();
+            notify();
+          });
         }
       }
     });
 
-    selectBlock().then(blockName => {
-      state = createBlock(blockName);
-      render();
-    });
+    selectInitialBlock();
 
     rootContainer.appendChild(laContainer);
+
+    return {
+      onChange: cb => {
+        listeners.push(cb);
+        cb(state);
+      },
+      change: newState => {
+        state = newState;
+        render();
+      }
+    }
   };
 }));

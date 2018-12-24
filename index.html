@@ -7,32 +7,103 @@
   <title>Layout architect</title>
   <link rel="stylesheet" href="./styles.css">
   <style>
-    body, html {
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
       width: 100%;
       height: 100%;
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       font-family: 16px;
     }
+    section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    section + section {
+      margin-top: 2em;
+    }
     #container {
-      margin: 4em auto;
+      margin: 0 auto;
       width: 300px;
       height: 300px;
       border: solid 1px #999;
       border-radius: 4px;
       padding: 0.5em;
     }
+    h1 {
+      margin-top: 2em;
+      margin-bottom: 2em;
+      padding: 0;
+      text-align: center;
+    }
+    h2 {
+      text-align: center;
+    }
+    #result {
+      font-size: 0.9em;
+    }
+    footer {
+      margin-top: 4em;
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    .centered-content {
+      max-width: 900px;
+      margin: 4em auto;
+    }
   </style>
 </head>
 <body>
 
-  <div id="container"></div>
+  <h1>Layout architect</h1>
+  <section>
+    <div id="container"></div>
+    <div id="result"></div>
+  </section>
+  
+  <div class="centered-content">
+    <h2>Usage</h2>
+    <pre>
+const la = LayoutArchitect(
+  document.querySelector('#container'),
+  ['editor', 'output', 'console', 'notes']
+);
+
+la.onChange(layout => {
+  // layout
+});
+la.change(
+  // new layout here
+);
+    </pre>
+  </div>
+
+  <footer>
+    <p>
+      Issues and pull requests: <a href="https://github.com/krasimir/layout-architect">github.com/krasimir/layout-architect</a>
+    </p>
+  </footer>
 
   <script src="./index.js"></script>
   <script>
-    LayoutArchitect(
+    const result = document.querySelector('#result');
+    const la = LayoutArchitect(
       document.querySelector('#container'),
-      ['editor', 'output', 'console']
-    )
+      ['editor', 'output', 'console', 'notes']
+    );
+
+    la.onChange(layout => {
+      if (layout) {
+        result.innerHTML = '<pre>' + JSON.stringify(layout, null, 2) + '</pre>';
+      } else {
+        result.innerHTML = '';
+      }
+    });
   </script>
   
 </body>
