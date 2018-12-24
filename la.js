@@ -56,8 +56,10 @@
     }
     function removeItem(parent, item) {
       if (!parent) {
-        state = initialState || null;
-        blocks.push(item.name);
+        state = null;
+        if (blocks.indexOf(item.name) === -1) {
+          blocks.push(item.name);
+        }
         return;
       }
 
@@ -95,7 +97,7 @@
       $a(e, 'class', 'la-block');
       if (item.elements.length === 0) {
         e.innerHTML = '<div class="la-name">' + item.name + '</div>';
-        addLinks(e, [ ['remove', 'X', 'la-remove'], ], item, parent);
+        addLinks(e, [ ['remove', '<svg width="14" height="14" viewBox="0 0 1792 1792"><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z"/></svg>', 'la-remove'], ], item, parent);
       } else {
         e.innerHTML = '<div class="la-children" style="grid-template-' + (item.direction === 'horizontal' ? 'rows' : 'columns') + ': repeat(' + item.elements.length + ', 1fr);"></div>';
         item.elements.forEach(i => e.querySelector('.la-children').appendChild(renderItem(i, item)))
@@ -115,7 +117,7 @@
         $a(link, 'href', 'javascript:void(0);');
         $a(link, 'data-op', 'select');
         link.item = blockName;
-        link.innerHTML = blockName;
+        link.innerHTML = '<svg width="10" height="10" viewBox="0 0 1792 1792"><path d="M1600 736v192q0 40-28 68t-68 28h-416v416q0 40-28 68t-68 28h-192q-40 0-68-28t-28-68v-416h-416q-40 0-68-28t-28-68v-192q0-40 28-68t68-28h416v-416q0-40 28-68t68-28h192q40 0 68 28t28 68v416h416q40 0 68 28t28 68z"/></svg> ' + blockName;
         e.appendChild(link);
       });
       $a(e, 'class', 'la-selector');
@@ -176,7 +178,7 @@
       }
     });
 
-    selectInitialBlock();
+    state ? render() : selectInitialBlock();
 
     rootContainer.appendChild(laContainer);
 

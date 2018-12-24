@@ -85,7 +85,7 @@ la.change(
 
   <footer>
     <p>
-      Issues and pull requests: <a href="https://github.com/krasimir/layout-architect">github.com/krasimir/layout-architect</a>
+      Documentation: <a href="https://github.com/krasimir/layout-architect">github.com/krasimir/layout-architect</a>
     </p>
   </footer>
 
@@ -94,7 +94,11 @@ la.change(
     const result = document.querySelector('#result');
     const la = LayoutArchitect(
       document.querySelector('#container'),
-      ['editor', 'output', 'console', 'notes']
+      ['editor', 'output', 'console', 'notes'],
+      {
+        "name": "editor",
+        "elements": []
+      }
     );
 
     la.onChange(layout => {
