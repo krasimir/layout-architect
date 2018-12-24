@@ -4,6 +4,13 @@ A small utility for building layouts. Written in vanilla JavaScript.
 
 ![layout-architect](./la.gif)
 
+Check out the demo [here](https://krasimir.github.io/layout-architect/).
+
+| File          | Size           
+| ------------- |:-------------
+| la.min.css    | 1.3KB
+| la.min.js     | 3.2KB
+
 ## Installation
 
 ### JavaScript:
