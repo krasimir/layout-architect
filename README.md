@@ -6,8 +6,8 @@ A small utility for building layouts. Written in vanilla JavaScript.
 
 | File          | Size           
 | ------------- |:-------------
-| la.min.css    | 1.3KB
-| la.min.js     | 3.2KB
+| [la.min.css](https://unpkg.com/layout-architect@latest/la.min.css)    | 1.3KB
+| [la.min.js](https://unpkg.com/layout-architect@latest/la.min.js)     | 3.2KB
 
 Check out the demo [here](https://krasimir.github.io/layout-architect/).
 
@@ -76,7 +76,7 @@ This is the format of the data which gets in and out of the library. Here is a s
 </script>
 ```
 
-`LayoutArchitect` returns an instance with thow methods:
+`LayoutArchitect` returns an instance with two methods:
 
 * `onChange(<function>)` - register a callback function which gets fired every time the layout is updated.
 * `change(<new state>)` - update the layout
