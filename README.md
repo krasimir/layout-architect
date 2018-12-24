@@ -1,6 +1,10 @@
 # Layout-Architect :rocket: [demo](https://krasimir.github.io/layout-architect/)
 
-A small utility for building layouts. Written in vanilla JavaScript.
+A small utility for building custom layouts.
+
+* Written in vanilla JavaScript.
+* Works with finite number of layout blocks.
+* No dependencies.
 
 ![layout-architect](./la.gif)
 
