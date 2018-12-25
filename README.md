@@ -80,8 +80,11 @@ This is the format of the data which gets in and out of the library. Here is a s
 </script>
 ```
 
-`LayoutArchitect` returns an instance with two methods:
+## API
+
+`LayoutArchitect` returns an instance with three methods:
 
 * `onChange(<function>)` - register a callback function which gets fired every time the layout is updated.
 * `change(<new state>)` - update the layout
+* `get()` - returns the layout
 

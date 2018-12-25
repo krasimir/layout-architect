@@ -200,11 +200,13 @@
     return {
       onChange: cb => {
         listeners.push(cb);
-        cb(state);
       },
       change: newState => {
         state = newState;
         render();
+      },
+      get() {
+        return state;
       }
     }
   };

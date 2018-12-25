@@ -102,6 +102,7 @@ la.change(
     );
 
     la.onChange(layout => {
+      console.log('change');
       if (layout) {
         result.innerHTML = '<pre>' + JSON.stringify(layout, null, 2) + '</pre>';
       } else {
