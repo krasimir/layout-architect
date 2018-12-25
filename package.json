@@ -1,6 +1,6 @@
 {
   "name": "layout-architect",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A small utility for building layouts written in vanilla JavaScript",
   "main": "la.min.js",
   "scripts": {

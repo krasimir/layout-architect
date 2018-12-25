@@ -91,24 +91,26 @@ la.change(
 
   <script src="./la.js"></script>
   <script>
+    const initialLayout = {
+      "name": "editor",
+      "elements": []
+    };
     const result = document.querySelector('#result');
     const la = LayoutArchitect(
       document.querySelector('#container'),
       ['editor', 'output', 'console', 'notes'],
-      {
-        "name": "editor",
-        "elements": []
-      }
+      initialLayout
     );
 
     la.onChange(layout => {
-      console.log('change');
       if (layout) {
         result.innerHTML = '<pre>' + JSON.stringify(layout, null, 2) + '</pre>';
       } else {
         result.innerHTML = '';
       }
     });
+
+    result.innerHTML = '<pre>' + JSON.stringify(initialLayout, null, 2) + '</pre>';
   </script>
   
 </body>
