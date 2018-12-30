@@ -1,6 +1,6 @@
 {
   "name": "layout-architect",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "A small utility for building layouts written in vanilla JavaScript",
   "main": "la.min.js",
   "scripts": {
@@ -31,6 +31,7 @@
   "babel": {
     "presets": [
       "@babel/preset-env"
-    ]
+    ],
+    "sourceType": "script"
   }
 }
